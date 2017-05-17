@@ -7,22 +7,21 @@ import xam
 
 features = pd.read_csv('data/features.csv')
 train_idxs = features['is_listened'].notnull()
-train = features[train_idxs]
-test = features[~train_idxs]
+train = features[train_idxs].copy()
+test = features[~train_idxs].copy()
 
 ewb = xam.preprocessing.EqualFrequencyBinner(n_bins=20)
 ewb.fit(test[['user_listen_count']])
 train['bin'] = ewb.transform(train[['user_listen_count']])
 bin_counts = Counter(train['bin'])
 train['weight'] = train['bin'].apply(lambda x: 1 / bin_counts[x])
-train_resampled = train.sample(800000, weights='weight')
+train2 = train.sample(800000, weights='weight').drop(['bin', 'weight'], axis='columns')
 
-train_sample =
-train_sample = train.sample(50000).sample(50000)
+train_sample = train2.sample(50000)
 
 y_cols = ['is_listened', 'sample_id']
-X_train = train.drop(y_cols, axis='columns').copy()
-y_train = train[y_cols].copy()
+X_train = train2.drop(y_cols, axis='columns').copy()
+y_train = train2[y_cols].copy()
 
 X_train_sample = train_sample.drop(y_cols, axis='columns').copy()
 y_train_sample = train_sample[y_cols].copy()
