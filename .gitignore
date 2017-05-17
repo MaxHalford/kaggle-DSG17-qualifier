@@ -1,0 +1,8 @@
+.ipynb_checkpoints/
+data/
+*.h5
+*.pkl
+*.pyc
+.doit.db.db
+models/*/submission*.csv
+models/*/*.png
