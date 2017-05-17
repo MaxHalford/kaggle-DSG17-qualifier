@@ -13,7 +13,7 @@ X_train = pd.read_csv('data/X_train.csv')
 y_train = pd.read_csv('data/y_train.csv')['is_listened']
 
 # Create a validation set with 20% of the training set
-X_train, X_val, y_train, y_val = model_selection.train_test_split(X_train, y_train, test_size=0.2)
+X_train, X_val, y_train, y_val = model_selection.train_test_split(X_train, y_train, test_size=0.15)
 
 pipe = pipeline.Pipeline([
     ('gbm', xgb.XGBClassifier(
@@ -21,6 +21,7 @@ pipe = pipeline.Pipeline([
         learning_rate=0.007,
         max_depth=3,
         subsample=0.8,
+        colsample_bytree=0.9,
         scale_pos_weight=sum(y_train == 0) / sum(y_train == 1)
     ))
 ])
