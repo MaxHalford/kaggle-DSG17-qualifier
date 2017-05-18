@@ -5,11 +5,22 @@ import pandas as pd
 
 merged = pd.read_csv('data/kaggle/merged.csv').sort_values('ts_listen')
 
+# User media listening frequency along time
+merged['user_media_listen_freq'] = pd.concat([
+    g['is_listened'].shift().rolling(min_periods=1, window=len(g)).mean()
+    for _, g in merged.groupby(['user_id', 'media_id'])
+])
+merged['user_media_listen_freq'].fillna(0.5, inplace=True)
+
 # User listening frequency along time
 merged['user_listen_freq'] = pd.concat([
     g['is_listened'].shift().rolling(min_periods=1, window=len(g)).mean()
     for _, g in merged.groupby('user_id')
 ])
+merged['user_listen_freq'].fillna(
+    merged.groupby('user_id').nth(1)['user_listen_freq'].mean(),
+    inplace=True
+)
 
 # User number of listens along time
 merged['user_listen_count'] = pd.concat([
@@ -76,6 +87,7 @@ features = flow[[
     'user_listen_count_flow',
     'user_listen_freq',
     'user_listen_freq_flow',
+    'user_media_listen_freq',
 
     'is_listened',
     'sample_id'

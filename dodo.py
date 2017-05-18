@@ -13,7 +13,10 @@ def task_merge_kaggle_data():
 def task_extract_features():
     return {
         'actions': ['python scripts/extract_features.py'],
-        'file_dep': ['data/kaggle/merged.csv'],
+        'file_dep': [
+            'data/user_media_freqs.csv',
+            'data/kaggle/merged.csv'
+        ],
         'targets': ['data/features.csv']
     }
 
