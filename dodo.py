@@ -13,10 +13,7 @@ def task_merge_kaggle_data():
 def task_extract_features():
     return {
         'actions': ['python scripts/extract_features.py'],
-        'file_dep': [
-            'data/user_media_freqs.csv',
-            'data/kaggle/merged.csv'
-        ],
+        'file_dep': ['data/kaggle/merged.csv'],
         'targets': ['data/features.csv']
     }
 
@@ -39,23 +36,6 @@ def task_split_train_test():
         'actions': ['python scripts/split_train_test.py'],
         'file_dep': ['data/features.csv'],
         'targets': TRAINING_SETS + TEST_SETS
-    }
-
-
-def task_fit_keras():
-    return {
-        'actions': ['python models/keras/fit.py'],
-        'file_dep': TRAINING_SETS,
-        'targets': ['models/keras/pipeline.pkl', 'models/keras/model.h5'],
-        'verbosity': 2 # To display training progress
-    }
-
-
-def task_predict_keras():
-    return {
-        'actions': ['python models/keras/predict.py'],
-        'file_dep': TEST_SETS + ['models/keras/pipeline.pkl', 'models/keras/model.h5'],
-        'targets': ['models/keras/submission_keras.csv']
     }
 
 
