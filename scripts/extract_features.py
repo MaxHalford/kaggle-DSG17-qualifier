@@ -15,15 +15,11 @@ merged['user_media_listen_freq'].fillna(
     inplace=True
 )
 
-print(1)
-
 # User media listening count along time
 merged['user_media_listen_count'] = pd.concat([
     g['is_listened'].shift().rolling(min_periods=1, window=len(g)).count()
     for _, g in merged.groupby(['user_id', 'media_id'])
 ])
-
-print(2)
 
 # User genre listening frequency along time
 merged['user_genre_listen_freq'] = pd.concat([
@@ -35,15 +31,11 @@ merged['user_genre_listen_freq'].fillna(
     inplace=True
 )
 
-print(3)
-
 # User genre listening count along time
 merged['user_genre_listen_count'] = pd.concat([
     g['is_listened'].shift().rolling(min_periods=1, window=len(g)).count()
     for _, g in merged.groupby(['user_id', 'genre_id'])
 ])
-
-print(4)
 
 # User listening frequency along time
 merged['user_listen_freq'] = pd.concat([
@@ -55,15 +47,11 @@ merged['user_listen_freq'].fillna(
     inplace=True
 )
 
-print(5)
-
 # User number of listens along time
 merged['user_listen_count'] = pd.concat([
     g['is_listened'].shift().rolling(min_periods=1, window=len(g)).count()
     for _, g in merged.groupby('user_id')
 ])
-
-print(6)
 
 # Only keep Flow observations
 test_mask = merged['is_listened'].isnull()
@@ -76,8 +64,6 @@ flow['first_of_session'] = pd.concat([
     for _, g in flow.groupby('user_id')
 ]).astype(int)
 
-print(7)
-
 # User Flow listening frequency along time
 flow['user_listen_freq_flow'] = pd.concat([
     g['is_listened'].shift().rolling(min_periods=1, window=len(g)).mean()
@@ -88,15 +74,11 @@ flow['user_listen_freq_flow'].fillna(
     inplace=True
 )
 
-print(8)
-
 # User number of Flow listens along time
 flow['user_listen_count_flow'] = pd.concat([
     g['is_listened'].shift().rolling(min_periods=1, window=len(g)).count()
     for _, g in flow.groupby('user_id')
 ])
-
-print(9)
 
 # User Flow ratio
 flow['user_flow_ratio'] = (flow['user_listen_count_flow'] / flow['user_listen_count']).fillna(0.5)
@@ -121,6 +103,7 @@ features = flow[[
     'first_of_session',
     'listen_at_hour',
     'listen_at_weekday',
+    'media_duration',
     'platform',
     'release_year',
     'user_age',
@@ -147,7 +130,5 @@ test_features = features[features['is_listened'].isnull()]
 for feature in features.columns:
     if feature.startswith('context_type') and test_features[feature].sum() == 0:
         features.drop(feature, axis='columns', inplace=True)
-
-print(10)
 
 features.to_csv('data/features.csv', index=False)
