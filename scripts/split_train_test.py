@@ -15,7 +15,7 @@ ewb.fit(test[['user_listen_count']])
 train['bin'] = ewb.transform(train[['user_listen_count']])
 bin_counts = Counter(train['bin'])
 train['weight'] = train['bin'].apply(lambda x: 1 / bin_counts[x])
-train2 = train.sample(1000000, weights='weight').drop(['bin', 'weight'], axis='columns')
+train2 = train.sample(1300000, weights='weight').drop(['bin', 'weight'], axis='columns')
 
 train_sample = train2.sample(50000)
 

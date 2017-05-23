@@ -21,7 +21,7 @@ pipe = pipeline.Pipeline([
         learning_rate=0.007,
         max_depth=5,
         subsample=0.8,
-        colsample_bytree=0.9,
+        colsample_bytree=0.8,
         scale_pos_weight=sum(y_train == 0) / sum(y_train == 1)
     ))
 ])
