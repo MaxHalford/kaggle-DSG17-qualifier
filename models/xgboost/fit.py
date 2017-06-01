@@ -12,7 +12,7 @@ import xgboost as xgb
 X_train = pd.read_csv('data/X_train.csv')
 y_train = pd.read_csv('data/y_train.csv')['is_listened']
 
-# Create a validation set with 20% of the training set
+# Create a validation set with 10% of the training set
 X_train, X_val, y_train, y_val = model_selection.train_test_split(X_train, y_train, test_size=0.1)
 
 pipe = pipeline.Pipeline([
