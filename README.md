@@ -1,3 +1,7 @@
+# DSG17 qualifier
+
+[Leaderboard](https://inclass.kaggle.com/c/dsg17-online-phase)
+
 ## Watermark
 
 Via [rasbt/watermark](https://github.com/rasbt/watermark):
